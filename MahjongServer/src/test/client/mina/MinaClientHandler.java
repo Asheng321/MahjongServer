@@ -38,6 +38,15 @@ public class MinaClientHandler extends IoHandlerAdapter {
         byte resultCode2=buf.get();
         log.debug("register结果:" + resultCode2);
         break;
+      case 0x0006:
+        int size=buf.get();
+        for(int i=0; i < size; i++) {
+          int id=buf.getInt();
+          String name=buf.getString();
+          int totalCount=buf.getInt();
+          int playerCount=buf.getInt();
+          System.out.println("id:" + id + ",name:" + name + "," + playerCount + "/" + totalCount);
+        }
     }
   }
 

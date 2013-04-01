@@ -25,10 +25,16 @@ public class Room {
 
   @Transient
   private List<Player> players=new LinkedList<Player>();// 玩家
-
-  private int status;// 本桌状态
-
+  
+  private String name;// 房间名
+  
+  private String password;// 房间密码
+  
   private int playerCount;// 玩家人数
+  
+  private int totalCount;// 总人数
+  
+  private int status;// 本桌状态
 
   @Transient
   private List<Integer> mj=new LinkedList<Integer>();// 一盒麻将
@@ -77,5 +83,29 @@ public class Room {
 
   public List<Integer> getMj() {
     return mj;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setTotalCount(int totalCount) {
+    this.totalCount = totalCount;
+  }
+
+  public int getTotalCount() {
+    return totalCount;
   }
 }

@@ -2,6 +2,7 @@ package test.client.test;
 
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
+import java.util.List;
 
 import org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder;
 import org.apache.mina.core.future.ConnectFuture;
@@ -15,6 +16,9 @@ import test.client.mina.MinaClientHandler;
 import com.mahjong.server.common.Common;
 import com.mahjong.server.mina.protocol.DataBuf;
 import com.mahjong.server.mina.protocol.MessageProtocol;
+import com.mahjong.server.model.Room;
+import com.mahjong.server.service.GameService;
+import com.mahjong.server.service.impl.GameServiceImpl;
 
 /**
  * 
@@ -69,13 +73,46 @@ public class MinaClientTest {
     connector.dispose();
   }
 
-  //   @Test
+  public void roomList(int size) {
+    NioSocketConnector connector=new NioSocketConnector();
+    DefaultIoFilterChainBuilder filterChain=connector.getFilterChain();// 过滤链
+    filterChain.addLast("clientFilter", new ProtocolCodecFilter(new ClientMessageProtocolCodecFactory(Charset.forName("UTF-8"))));// add
+    // Filter
+    connector.setHandler(new MinaClientHandler());// handler
+    connector.setConnectTimeoutMillis(3000);
+    ConnectFuture cf=connector.connect(new InetSocketAddress("localhost", Common.PORT));
+    cf.awaitUninterruptibly();// 等待连接创建完成
+    MessageProtocol req=new MessageProtocol();
+    req.setTag(Common.Req);
+    req.setProtocolNum((short)0x0005);
+    DataBuf dataBuf=DataBuf.allocate(1024);
+    dataBuf.putInt(size);
+    dataBuf.flip();
+    req.setDataBuf(dataBuf);
+    cf.getSession().write(req);
+    cf.getSession().getCloseFuture().awaitUninterruptibly();// 等待连接断开
+    connector.dispose();
+  }
+
+  // @Test
   public void testLogin() {
     login("test", "test");
   }
 
-  @Test
+   @Test
   public void testRegister() {
     register("test3", "test2", "1234567890222");
+  }
+
+  @Test
+  public void testRoomList() {
+    roomList(5);
+  }
+
+//  @Test
+  public void test() {
+    GameService gs=new GameServiceImpl();
+    List<Room> list=gs.getRooms();
+    list.get(2).setName("xxxxxx");
   }
 }
