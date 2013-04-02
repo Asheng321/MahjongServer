@@ -21,6 +21,7 @@ public class GameServiceImpl implements GameService, InitializingBean {
   @Resource
   private GameDao gameDao;
 
+  // 所有房间列表
   private static List<Room> rooms=new LinkedList<Room>();
 
   public void sitDown() {

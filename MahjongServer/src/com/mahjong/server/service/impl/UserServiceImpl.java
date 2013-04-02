@@ -1,5 +1,7 @@
 package com.mahjong.server.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -27,5 +29,9 @@ public class UserServiceImpl implements UserService {
   public void save(User user) {
     // TODO Auto-generated method stub
     userDao.save(user);
+  }
+
+  public List<User> getAllUser() {
+    return userDao.getAllUser();
   }
 }

@@ -9,7 +9,7 @@
 	<head>
 		<base href="<%=basePath%>">
 
-		<title>注册</title>
+		<title>登陆</title>
 
 		<meta http-equiv="pragma" content="no-cache">
 		<meta http-equiv="cache-control" content="no-cache">
@@ -23,11 +23,10 @@
 	</head>
 
 	<body>
-		<form action="web/game/register" method="get">
+		<form action="web/game/login" method="get">
 			账号：<input type="text" name="username" /><br/>
 			密码：<input type="password" name="password" /><br/>
-			电话：<input type="text" name="mobileNum" /><br/>
-			<input type="submit" value="注册"/>
+			<input type="submit" value="登陆"/>
 		</form>
 	</body>
 </html>

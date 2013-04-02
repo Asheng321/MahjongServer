@@ -11,6 +11,9 @@ import com.mahjong.server.common.Common;
 import com.mahjong.server.mina.protocol.AbsMessageProtocol;
 import com.mahjong.server.mina.protocol.DataBuf;
 import com.mahjong.server.mina.protocol.MessageProtocol;
+import com.mahjong.server.model.Player;
+import com.mahjong.server.model.User;
+import com.mahjong.server.service.OnlineService;
 import com.mahjong.server.service.UserService;
 
 /**
@@ -35,6 +38,9 @@ public class LoginReq extends MessageProtocol {
 
   @Resource
   private UserService userService;
+  
+  @Resource
+  private OnlineService onlineService;
 
   @Override
   public short getProtocolNum() {
@@ -49,8 +55,16 @@ public class LoginReq extends MessageProtocol {
   @Override
   public AbsMessageProtocol execute(IoSession session, AbsMessageProtocol req) {
     log.debug(this.getClass().getSimpleName() + " execute");
-    if(null != userService.login(username, password)) {
+    User user=userService.login(username, password);
+    if(null != user) {
       log.debug("登陆成功");
+      // 把User封装为Player
+      Player player=new Player();
+      player.setId(user.getId());
+      player.setSession(session);
+      player.setUser(user);
+      // 加入在线列表
+      onlineService.addOnline(player);
       return new LoginResp((byte)1);
     }
     log.debug("登陆失败");

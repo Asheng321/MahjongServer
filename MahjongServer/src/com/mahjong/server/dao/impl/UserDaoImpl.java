@@ -19,7 +19,7 @@ import com.mahjong.server.model.User;
 @Repository
 public class UserDaoImpl extends BaseDao implements UserDao {
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked"})
   public User login(String username, String password) {
     Criteria ca=super.getSession().createCriteria(User.class);
     ca.add(Restrictions.eq("username", username));
@@ -30,5 +30,10 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 
   public void save(User user) {
     super.save(user);
+  }
+
+  public List<User> getAllUser() {
+    List<User> list=super.findAll(User.class);
+    return list;
   }
 }

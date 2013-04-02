@@ -1,5 +1,7 @@
 package com.mahjong.server.dao;
 
+import java.util.List;
+
 import com.mahjong.server.model.User;
 
 /**
@@ -13,4 +15,6 @@ public interface UserDao {
   public void save(User user);
 
   public User login(String username, String password);
+  
+  public List<User> getAllUser();
 }

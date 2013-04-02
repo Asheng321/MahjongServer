@@ -3,27 +3,17 @@ package com.mahjong.server.model;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Transient;
-
 /**
- * 房间
+ * 房间类，对一个房间的玩家进行封装，以便各个玩家之间数据交互
  * 
  * @author Simple
  * @date 2013-3-13 下午04:15:51
  * @Description TODO
  */
-@Entity
 public class Room {
 
-  @Id
-  @GeneratedValue(strategy=GenerationType.AUTO)
   private int id;
 
-  @Transient
   private List<Player> players=new LinkedList<Player>();// 玩家
   
   private String name;// 房间名
@@ -36,7 +26,6 @@ public class Room {
   
   private int status;// 本桌状态
 
-  @Transient
   private List<Integer> mj=new LinkedList<Integer>();// 一盒麻将
 
   public Room() {

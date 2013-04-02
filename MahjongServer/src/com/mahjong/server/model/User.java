@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 
 /**
  * 用户
@@ -25,9 +24,6 @@ public class User {
   private String password;
 
   private String mobileNum;
-
-  @Transient
-  private Player player;
 
   public int getId() {
     return id;
@@ -51,14 +47,6 @@ public class User {
 
   public void setPassword(String password) {
     this.password=password;
-  }
-
-  public Player getPlayer() {
-    return player;
-  }
-
-  public void setPlayer(Player player) {
-    this.player=player;
   }
 
   public void setMobileNum(String mobileNum) {

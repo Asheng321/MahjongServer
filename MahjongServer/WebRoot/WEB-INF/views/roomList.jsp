@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
   String path=request.getContextPath();
   String basePath=request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -9,7 +10,7 @@
 	<head>
 		<base href="<%=basePath%>">
 
-		<title>注册</title>
+		<title>房间列表</title>
 
 		<meta http-equiv="pragma" content="no-cache">
 		<meta http-equiv="cache-control" content="no-cache">
@@ -23,11 +24,44 @@
 	</head>
 
 	<body>
-		<form action="web/game/register" method="get">
-			账号：<input type="text" name="username" /><br/>
-			密码：<input type="password" name="password" /><br/>
-			电话：<input type="text" name="mobileNum" /><br/>
-			<input type="submit" value="注册"/>
-		</form>
+		房间列表
+		<table border="1">
+			<tr>
+				<td>
+					id
+				</td>
+				<td>
+					房间名
+				</td>
+				<td>
+					密码
+				</td>
+				<td>
+					人数
+				</td>
+				<td>
+					状态
+				</td>
+			</tr>
+			<c:forEach var="room" items="${list}" varStatus="status">
+				<tr>
+					<td>
+						${room.id }
+					</td>
+					<td>
+						${room.name }
+					</td>
+					<td>
+						${room.password }
+					</td>
+					<td>
+						${room.playerCount }/${room.totalCount }
+					</td>
+					<td>
+						${room.status }
+					</td>
+				</tr>
+			</c:forEach>
+		</table>
 	</body>
 </html>
