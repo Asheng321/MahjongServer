@@ -2,8 +2,6 @@ package com.mahjong.server.protocolHandler.game;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.apache.log4j.Logger;
 import org.apache.mina.core.session.IoSession;
 import org.springframework.context.annotation.Scope;
@@ -14,7 +12,6 @@ import com.mahjong.server.mina.protocol.AbsMessageProtocol;
 import com.mahjong.server.mina.protocol.DataBuf;
 import com.mahjong.server.mina.protocol.MessageProtocol;
 import com.mahjong.server.model.Room;
-import com.mahjong.server.service.GameService;
 
 /**
  * 房间列表
@@ -33,9 +30,6 @@ public class RoomListReq extends MessageProtocol {
 
   private Logger log=Logger.getLogger(this.getClass());
 
-  @Resource
-  private GameService gameService;
-
   private int size;
 
   @Override
@@ -51,7 +45,7 @@ public class RoomListReq extends MessageProtocol {
   @Override
   public AbsMessageProtocol execute(IoSession session, AbsMessageProtocol req) {
     log.debug(this.getClass().getSimpleName() + " execute");
-    List<Room> list=gameService.getRooms(size);
+    List<Room> list=roomManager.getRooms(size);
     return new RoomListResp(list);
   }
 

@@ -20,21 +20,19 @@ public class Player {
 
   private int id;
 
-  private User user;
-
   private int roomId;// 房间id
 
   private int status;// 状态
 
   private int position;// 位置
 
-  // @Transient声明，相当于临时变量，不参与入库
+  private User user;// 用户信息
+
   private List<Integer> mjData=new LinkedList<Integer>();// 麻将数据
 
-  private IoSession session;// sessionId;
+  private IoSession session;// session;
 
   public Player() {
-    // TODO Auto-generated constructor stub
   }
 
   public Player(IoSession session) {

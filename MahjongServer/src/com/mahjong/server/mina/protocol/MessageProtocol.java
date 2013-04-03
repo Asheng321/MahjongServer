@@ -1,6 +1,10 @@
 package com.mahjong.server.mina.protocol;
 
 import org.apache.mina.core.session.IoSession;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.mahjong.server.manager.RoomManager;
+import com.mahjong.server.manager.OnlineManager;
 
 /**
  * 
@@ -9,6 +13,12 @@ import org.apache.mina.core.session.IoSession;
  * @Description 消息协议-请求
  */
 public class MessageProtocol extends AbsMessageProtocol {
+  
+  @Autowired
+  protected RoomManager roomManager;
+
+  @Autowired
+  protected OnlineManager onlineManager;
 
   // tag
   // length

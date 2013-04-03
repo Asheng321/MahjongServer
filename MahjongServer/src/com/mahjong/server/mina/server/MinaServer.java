@@ -4,13 +4,12 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 
-import javax.annotation.Resource;
-
 import org.apache.log4j.Logger;
 import org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mahjong.server.common.Common;
@@ -30,7 +29,7 @@ public class MinaServer implements InitializingBean {
 
   private NioSocketAcceptor acceptor;
 
-  @Resource
+  @Autowired
   private MinaServerHandler minaServerHandler;
 
   private void startServer() {

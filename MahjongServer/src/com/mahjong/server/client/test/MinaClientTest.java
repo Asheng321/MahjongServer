@@ -15,11 +15,10 @@ import org.springframework.stereotype.Component;
 import com.mahjong.server.client.mina.ClientMessageProtocolCodecFactory;
 import com.mahjong.server.client.mina.MinaClientHandler;
 import com.mahjong.server.common.Common;
+import com.mahjong.server.manager.RoomManager;
 import com.mahjong.server.mina.protocol.DataBuf;
 import com.mahjong.server.mina.protocol.MessageProtocol;
 import com.mahjong.server.model.Room;
-import com.mahjong.server.service.GameService;
-import com.mahjong.server.service.impl.GameServiceImpl;
 
 /**
  * 
@@ -97,7 +96,39 @@ public class MinaClientTest {
     connector.dispose();
   }
 
-  @Test
+  public void enterRoom(int roomId) {
+    NioSocketConnector connector=new NioSocketConnector();
+    DefaultIoFilterChainBuilder filterChain=connector.getFilterChain();// 过滤链
+    filterChain.addLast("clientFilter", new ProtocolCodecFilter(new ClientMessageProtocolCodecFactory(Charset.forName("UTF-8"))));// add
+    // Filter
+    connector.setHandler(new MinaClientHandler());// handler
+    connector.setConnectTimeoutMillis(3000);
+    ConnectFuture cf=connector.connect(new InetSocketAddress("localhost", Common.PORT));
+    cf.awaitUninterruptibly();// 等待连接创建完成
+    // login
+    MessageProtocol req1=new MessageProtocol();
+    req1.setTag(Common.Req);
+    req1.setProtocolNum((short)0x0003);
+    DataBuf dataBuf1=DataBuf.allocate(1024);
+    dataBuf1.putString("test2");
+    dataBuf1.putString("test2");
+    dataBuf1.flip();
+    req1.setDataBuf(dataBuf1);
+    cf.getSession().write(req1);
+    // enterroom
+    MessageProtocol req=new MessageProtocol();
+    req.setTag(Common.Req);
+    req.setProtocolNum((short)0x0007);
+    DataBuf dataBuf=DataBuf.allocate(1024);
+    dataBuf.putInt(roomId);
+    dataBuf.flip();
+    req.setDataBuf(dataBuf);
+    cf.getSession().write(req);
+    cf.getSession().getCloseFuture().awaitUninterruptibly();// 等待连接断开
+    connector.dispose();
+  }
+
+  // @Test
   public void testLogin() {
     login("test", "test");
   }
@@ -112,9 +143,14 @@ public class MinaClientTest {
     roomList(5);
   }
 
+  @Test
+  public void testEnterRoom() {
+    enterRoom(1);
+  }
+
   // @Test
   public void test() {
-    GameService gs=new GameServiceImpl();
+    RoomManager gs=new RoomManager();
     List<Room> list=gs.getRooms();
     list.get(2).setName("xxxxxx");
   }

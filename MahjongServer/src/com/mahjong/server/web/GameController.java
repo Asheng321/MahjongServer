@@ -7,15 +7,16 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.mahjong.server.client.test.MinaClientTest;
+import com.mahjong.server.manager.RoomManager;
+import com.mahjong.server.manager.OnlineManager;
 import com.mahjong.server.model.Player;
 import com.mahjong.server.model.Room;
 import com.mahjong.server.model.User;
-import com.mahjong.server.service.GameService;
-import com.mahjong.server.service.OnlineService;
 import com.mahjong.server.service.UserService;
 
 /**
@@ -33,10 +34,10 @@ public class GameController {
   private MinaClientTest minaClientTest;
 
   @Autowired
-  private GameService gameService;
+  private RoomManager gameManager;
 
   @Autowired
-  private OnlineService onlineService;
+  private OnlineManager onlineManager;
 
   @Autowired
   private UserService userService;
@@ -53,14 +54,14 @@ public class GameController {
 
   @RequestMapping(value="/changeRoomName", method=RequestMethod.GET)
   public String changeRoomName(Model model) {
-    List<Room> list=gameService.getRooms();
+    List<Room> list=gameManager.getRooms();
     list.get(1).setName("xxxx");
     return "main";
   }
 
   @RequestMapping(value="/onlinePlayerList", method=RequestMethod.GET)
   public String onlinePlayerList(Model model) {
-    List<Player> list=onlineService.getAllOnlinePlayer();
+    List<Player> list=onlineManager.getAllOnlinePlayer();
     model.addAttribute("list", list);
     return "onlinePlayerList";
   }
@@ -74,7 +75,7 @@ public class GameController {
 
   @RequestMapping(value="/roomList", method=RequestMethod.GET)
   public String roomList(Model model) {
-    List<Room> list=gameService.getRooms();
+    List<Room> list=gameManager.getRooms();
     model.addAttribute("list", list);
     return "roomList";
   }
@@ -85,6 +86,12 @@ public class GameController {
     String password=req.getParameter("password");
     String mobileNum=req.getParameter("mobileNum");
     minaClientTest.register(username, password, mobileNum);
+    return "login";
+  }
+
+  @RequestMapping(value="/enterRoom/{roomId}", method=RequestMethod.GET)
+  public String enterRoom(Model model, HttpServletRequest req, @PathVariable int roomId) {
+    minaClientTest.enterRoom(roomId);
     return "login";
   }
 

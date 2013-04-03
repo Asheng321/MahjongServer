@@ -42,6 +42,9 @@
 				<td>
 					状态
 				</td>
+				<td>
+					操作
+				</td>
 			</tr>
 			<c:forEach var="room" items="${list}" varStatus="status">
 				<tr>
@@ -59,6 +62,9 @@
 					</td>
 					<td>
 						${room.status }
+					</td>
+					<td>
+						<a href="web/game/enterRoom/${room.id }">进入房间</a>
 					</td>
 				</tr>
 			</c:forEach>

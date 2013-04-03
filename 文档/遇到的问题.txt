@@ -1,1 +1,6 @@
 在web.xml中不能加入hibernate的openSessionInView，会报错。导致@Controllor功能不能用。
+
+
+MessageProtocol extends AbsMessageProtocol
+AbsMessageProtocol implements IMessageProtocol
+需要做处理，感觉不够直接

@@ -1,9 +1,8 @@
 package com.mahjong.server.protocolHandler.user;
 
-import javax.annotation.Resource;
-
 import org.apache.log4j.Logger;
 import org.apache.mina.core.session.IoSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +12,6 @@ import com.mahjong.server.mina.protocol.DataBuf;
 import com.mahjong.server.mina.protocol.MessageProtocol;
 import com.mahjong.server.model.Player;
 import com.mahjong.server.model.User;
-import com.mahjong.server.service.OnlineService;
 import com.mahjong.server.service.UserService;
 
 /**
@@ -36,12 +34,9 @@ public class LoginReq extends MessageProtocol {
 
   private String password;
 
-  @Resource
+  @Autowired
   private UserService userService;
   
-  @Resource
-  private OnlineService onlineService;
-
   @Override
   public short getProtocolNum() {
     return PROTOCOL_NUM;
@@ -64,7 +59,7 @@ public class LoginReq extends MessageProtocol {
       player.setSession(session);
       player.setUser(user);
       // 加入在线列表
-      onlineService.addOnline(player);
+      onlineManager.addOnline(player);
       return new LoginResp((byte)1);
     }
     log.debug("登陆失败");

@@ -1,0 +1,22 @@
+Spring3.1+Hibernate4.1+Mina2.0.7
+c3p0连接池
+mysql数据库
+
+
+项目暂时通过Tomcat6.0运行
+web页访问地址：http://localhost:8088/MahjongServer/
+(tomcat的端口号自定)
+web页主要用来对服务器功能性进行测试
+
+
+com.mahjong.server
+	client	主要用来写测试程序
+	commom	公共类
+	dao	持久层
+	manager	主要写对内存数据管理的业务逻辑，游戏毕竟是内存上的游戏，所以需要入库的只有某些数据
+	mina	通信层
+	model	实体类
+	protocolHandler	协议数据的接收，逻辑处理，数据返回
+	service	数据层
+	util	工具类
+	web	web页面

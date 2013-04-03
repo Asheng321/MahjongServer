@@ -4,15 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.apache.log4j.Logger;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.mahjong.server.manager.OnlineManager;
 import com.mahjong.server.mina.protocol.AbsMessageProtocol;
 import com.mahjong.server.mina.protocol.DataBuf;
 import com.mahjong.server.util.spring.BeanUtil;
@@ -28,7 +28,11 @@ public class MinaServerHandler extends IoHandlerAdapter implements InitializingB
 
   private Logger log=Logger.getLogger(MinaServerHandler.class);
 
-  @Resource
+  @SuppressWarnings("unused")
+  @Autowired
+  private OnlineManager onlineManager;
+
+  @Autowired
   private List<AbsMessageProtocol> messageProtocols;
 
   // 注册[协议编码-协议处理类]
@@ -67,6 +71,12 @@ public class MinaServerHandler extends IoHandlerAdapter implements InitializingB
     // 获取相应协议处理类的bean
     AbsMessageProtocol protocolHandler=BeanUtil.makeNewIProtocolHandler(protocolHandlerClassName);
     if(null != protocolHandler) {
+      // Player player=onlineManager.getBySession(session);
+      // if(null == player) {
+      // log.debug("不在线,重新登录!");
+      // return;
+      // }
+      // protocolHandler.setPlayer(player);
       protocolHandler.reqDecode(mp.getDataBuf());// 请求解码
       returnMP=protocolHandler.execute(session, returnMP);// 请求执行体
       returnMP.setDataBuf(DataBuf.allocate(1024));
